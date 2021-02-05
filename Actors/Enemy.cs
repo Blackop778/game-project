@@ -47,10 +47,5 @@ namespace GameProject.Actors
 
             collider = null;
         }
-
-        internal override void Update()
-        {
-
-        }
     }
 }

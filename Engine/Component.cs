@@ -26,21 +26,6 @@ namespace GameProject.Engine
             return Attached.GetComponents<T>();
         }
 
-        internal virtual void Start()
-        {
-
-        }
-
-        internal virtual void Update()
-        {
-
-        }
-
-        internal virtual void FixedUpdate()
-        {
-
-        }
-
         public void Destroy()
         {
             if (IsDestroyed)
@@ -50,9 +35,26 @@ namespace GameProject.Engine
             Game.Instance.Destroy(this);
         }
 
+        #region Virtual methods
+        internal virtual void Start()
+        {
+
+        }
+
+        internal virtual void FixedUpdate()
+        {
+
+        }
+
+        internal virtual void Update()
+        {
+
+        }
+
         public virtual void FinalDestroy()
         {
             Attached = null;
         }
+        #endregion
     }
 }

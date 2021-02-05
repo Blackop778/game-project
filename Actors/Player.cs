@@ -11,8 +11,9 @@ namespace GameProject.Actors
 {
     internal class Player : Actor
     {
+        public Rigidbody2D Rigidbody { get; private set; }
+
         private Texture2D sprite;
-        private Rigidbody2D rigidbody;
         private Actor boomerang;
         private RectangleCollider collider;
 
@@ -20,9 +21,9 @@ namespace GameProject.Actors
         {
             base.Start();
 
-            rigidbody = AddComponent(new Rigidbody2D(this));
-            rigidbody.MaxVelocity = 400;
-            rigidbody.Drag = 100f;
+            Rigidbody = AddComponent(new Rigidbody2D(this));
+            Rigidbody.MaxVelocity = 400;
+            Rigidbody.Drag = 100f;
 
             AddComponent(new PlayerController(this));
             collider = AddComponent(new RectangleCollider(this, Position, 64, 128));
@@ -58,7 +59,7 @@ namespace GameProject.Actors
         {
             base.FinalDestroy();
 
-            rigidbody = null;
+            Rigidbody = null;
             boomerang = null;
             collider = null;
         }

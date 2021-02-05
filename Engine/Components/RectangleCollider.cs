@@ -18,32 +18,32 @@ namespace GameProject.Engine.Components
         /// </summary>
         public float Y;
         private float _width;
-        private float _halfwidth;
+        public float HalfWidth { get; private set; }
         public float Width
         {
             get => _width;
             set
             {
                 _width = value;
-                _halfwidth = _width / 2;
+                HalfWidth = _width / 2;
             }
         }
         private float _height;
-        private float _halfheight;
+        public float HalfHeight { get; private set; }
         public float Height
         {
             get => _height;
             set
             {
                 _height = value;
-                _halfheight = _height / 2;
+                HalfHeight = _height / 2;
             }
         }
 
         public float Left => X;
         public float Right => X + Width;
         public float Top => Y;
-        public float Bottom => Y + Height;
+        public float Bottom => Y - Height;
 
         /// <summary>
         /// position is the top left corner of the rectangle
@@ -64,8 +64,8 @@ namespace GameProject.Engine.Components
 
         public void SetPositionFromCenterPoint(Vector2 center)
         {
-            X = center.X - _halfwidth;
-            Y = center.Y - _halfheight;
+            X = center.X - HalfWidth;
+            Y = center.Y + HalfHeight;
         }
 
         /// <summary>

@@ -44,6 +44,7 @@ namespace GameProject
             toDestroy = new List<IDestroyable>();
             colliders = new List<RectangleCollider>();
 
+            SpawnBlockersAroundScreen();
             Instantiate(new Player());
             SpawnEnemy();
             Instantiate(new Scoreboard(new Vector2(20, 20)));
@@ -115,7 +116,7 @@ namespace GameProject
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.YellowGreen);
+            GraphicsDevice.Clear(Color.Green);
 
             SpriteBatch.Begin();
             foreach (Actor actor in actors)
@@ -177,6 +178,14 @@ namespace GameProject
         public T GetActor<T>() where T : Actor
         {
             return actors.Find(a => a is T) as T;
+        }
+
+        public void SpawnBlockersAroundScreen()
+        {
+            Instantiate(new PlayerBlocker(new Vector2(0, DisplayHeight / 2 + 501), Direction.Top));
+            Instantiate(new PlayerBlocker(new Vector2(0, -DisplayHeight / 2 - 501), Direction.Bottom));
+            Instantiate(new PlayerBlocker(new Vector2(-DisplayWidth / 2 - 501, 0), Direction.Left));
+            Instantiate(new PlayerBlocker(new Vector2(DisplayWidth / 2 + 501, 0), Direction.Right));
         }
     }
 }

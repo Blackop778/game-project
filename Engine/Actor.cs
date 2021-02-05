@@ -154,7 +154,10 @@ namespace GameProject.Engine
 
         }
 
-        internal abstract void Update();
+        internal virtual void Update()
+        {
+
+        }
 
         internal virtual void Draw()
         {

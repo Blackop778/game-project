@@ -9,7 +9,7 @@ namespace GameProject.Engine
     {
         public static bool Collides(RectangleCollider a, RectangleCollider b)
         {
-            return !(a.Right < b.Left || a.Left > b.Right || a.Top > b.Bottom || a.Bottom < b.Top);
+            return !(a.Right < b.Left || a.Left > b.Right || a.Top < b.Bottom || a.Bottom > b.Top);
         }
 
         public static void CheckCollision(List<RectangleCollider> colliders)

@@ -37,10 +37,5 @@ namespace GameProject.Actors
             RenderTextScreenspace(Position, $"Enemies killed: {EnemiesKilled}", bangers, Color.Gold);
             RenderTextScreenspace(Position + new Vector2(0, bangers.LineSpacing), $"Streak: {EnemiesKilledStreak}", bangers, Color.Gold);
         }
-
-        internal override void Update()
-        {
-            
-        }
     }
 }
