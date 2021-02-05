@@ -34,6 +34,7 @@ namespace GameProject
             //Window.IsBorderless = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Window.Title = "Bannanarang";
 
             Instance = this;
         }
