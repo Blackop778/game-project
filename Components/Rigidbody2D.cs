@@ -16,11 +16,11 @@ namespace GameProject.Components
 
         public Rigidbody2D(Actor attached) : base(attached) { }
 
-        internal override void Update(GameTime gameTime)
+        internal override void FixedUpdate()
         {
-            base.Update(gameTime);
+            base.Update();
 
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = Time.fixedDeltaTime;
 
             if (!float.IsInfinity(MaxAcceleration) && Acceleration.LengthSquared() > (MaxAcceleration * MaxAcceleration))
             {
@@ -34,9 +34,15 @@ namespace GameProject.Components
             }
             Attached.Position += Velocity * deltaTime;
 
-            if (Drag != 0)
+            float velocityMag;
+            if (Drag != 0 && (velocityMag = Velocity.LengthSquared()) != 0)
             {
-                Velocity -= Drag * Velocity * deltaTime;
+                Vector2 newVelocity = Velocity;
+
+                newVelocity.X += (newVelocity.X * newVelocity.X) / velocityMag * Drag * deltaTime * (float.IsNegative(Velocity.X) ? 1 : -1);
+                newVelocity.Y += (newVelocity.Y * newVelocity.Y) / velocityMag * Drag * deltaTime * (float.IsNegative(Velocity.Y) ? 1 : -1);
+
+                Velocity = newVelocity;
             }
 
         }

@@ -16,8 +16,10 @@ namespace GameProject.Actors
         private bool returning;
         private Rigidbody2D rigidbody;
         private Texture2D sprite;
-        private readonly float maxVelocity = 400;
-        private readonly float minVelocity = 200;
+        private RectangleCollider collider;
+
+        private readonly float maxVelocity = 600;
+        private readonly float minVelocity = 400;
         private readonly float maximumInteractRange = 50;
 
         public Boomerang(Vector2 position, Vector2 destination, Actor user) : base(position) {
@@ -29,15 +31,21 @@ namespace GameProject.Actors
         {
             base.Start();
 
-            rigidbody = AddComponent(new Rigidbody2D(this)) as Rigidbody2D;
+            rigidbody = AddComponent(new Rigidbody2D(this));
             rigidbody.MaxVelocity = maxVelocity;
-            rigidbody.Drag = 0.25f;
-            returning = false;
+            rigidbody.Drag = 77f;
 
-            //SetVelocity(1);
+            collider = AddComponent(new RectangleCollider(this, Position, 16, 16));
+
+            returning = false;
         }
 
-        internal override void Update(GameTime gameTime)
+        internal override void Update()
+        {
+            
+        }
+
+        internal override void FixedUpdate()
         {
             if (returning)
                 destination = user.Position;
@@ -46,16 +54,8 @@ namespace GameProject.Actors
             {
                 if (!returning)
                     returning = true;
-                else
-                    Destroy(this);
             }
 
-            //if (returning)
-                SetVelocity((float)gameTime.ElapsedGameTime.TotalSeconds);
-        }
-
-        private void SetVelocity(float elapsedSeconds)
-        {
             Vector2 instantVel = destination - Position;
 
             if (instantVel.LengthSquared() < (minVelocity * minVelocity))
@@ -63,7 +63,7 @@ namespace GameProject.Actors
             else if (instantVel.LengthSquared() > (maxVelocity * maxVelocity))
                 instantVel = instantVel.SetLength(maxVelocity);
 
-            rigidbody.Velocity += instantVel * elapsedSeconds;
+            rigidbody.Velocity += instantVel * Time.fixedDeltaTime;
         }
 
         internal override void LoadContent(ContentManager content)
@@ -71,13 +71,22 @@ namespace GameProject.Actors
             base.LoadContent(content);
 
             sprite = content.Load<Texture2D>("boomerang");
+            collider.UpdateDimensions(Position, sprite);
         }
 
-        internal override void Draw(GameTime gameTime)
+        internal override void Draw()
         {
-            base.Draw(gameTime);
+            base.Draw();
 
             RenderSprite(Position, sprite);
+        }
+
+        internal override void OnTriggerEnter(RectangleCollider collider, Actor other, RectangleCollider otherCollider)
+        {
+            base.OnTriggerEnter(collider, other, otherCollider);
+
+            if (returning && other == user)
+                Destroy();
         }
     }
 }

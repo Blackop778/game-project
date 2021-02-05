@@ -17,11 +17,11 @@ namespace GameProject.Components
             rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        internal override void Update(GameTime gameTime)
+        internal override void Update()
         {
-            base.Update(gameTime);
+            base.Update();
 
-            Vector2 instantVel = InputManager.Direction * Acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 instantVel = InputManager.Direction * Acceleration * Time.deltaTime;
 
             // Make stopping faster
             if (Vector2.Dot(Vector2.Normalize(instantVel), Vector2.Normalize(rigidbody.Velocity)) < 0.25f)
@@ -30,6 +30,13 @@ namespace GameProject.Components
             }
 
             rigidbody.Velocity += instantVel;
+        }
+
+        internal override void Destroy()
+        {
+            base.Destroy();
+
+            rigidbody = null;
         }
     }
 }

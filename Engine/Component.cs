@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GameProject.Components;
 
 namespace GameProject.Engine
 {
@@ -29,9 +30,19 @@ namespace GameProject.Engine
 
         }
 
-        internal virtual void Update(GameTime gameTime)
+        internal virtual void Update()
         {
 
+        }
+
+        internal virtual void FixedUpdate()
+        {
+
+        }
+
+        internal virtual void Destroy()
+        {
+            Attached = null;
         }
     }
 }

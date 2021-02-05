@@ -14,19 +14,21 @@ namespace GameProject.Actors
         private Texture2D sprite;
         private Rigidbody2D rigidbody;
         private Actor boomerang;
+        private RectangleCollider collider;
 
         internal override void Start()
         {
             base.Start();
 
-            rigidbody = AddComponent(new Rigidbody2D(this)) as Rigidbody2D;
+            rigidbody = AddComponent(new Rigidbody2D(this));
             rigidbody.MaxVelocity = 400;
-            rigidbody.Drag = 0.25f;
+            rigidbody.Drag = 100f;
 
             AddComponent(new PlayerController(this));
+            collider = AddComponent(new RectangleCollider(this, Position, 64, 128));
         }
 
-        internal override void Update(GameTime gameTime)
+        internal override void Update()
         {
             if (boomerang != null && boomerang.IsDestroyed)
                 boomerang = null;
@@ -40,11 +42,12 @@ namespace GameProject.Actors
             base.LoadContent(content);
 
             sprite = content.Load<Texture2D>("Oval");
+            collider.UpdateDimensions(Position, sprite);
         }
 
-        internal override void Draw(GameTime gameTime)
+        internal override void Draw()
         {
-            base.Draw(gameTime);
+            base.Draw();
 
             RenderSprite(Position, sprite);
             RenderDebugText(new Vector2(20, 20), rigidbody.Velocity.ToString());

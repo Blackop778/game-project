@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GameProject.Components;
 
 namespace GameProject.Engine
 {
@@ -12,7 +13,7 @@ namespace GameProject.Engine
         public Vector2 Position { get; set; }
         public bool IsDestroyed { get; private set; }
 
-        private readonly List<Component> components;
+        private List<Component> components;
 
         public Actor() : this(Vector2.Zero) { }
 
@@ -62,17 +63,23 @@ namespace GameProject.Engine
             return ret.ToArray();
         }
 
-        public Component AddComponent(Component component)
+        public T AddComponent<T>(T component) where T : Component
         {
             components.Add(component);
+
+            component.Start();
 
             return component;
         }
 
-        public void Destroy(Actor a)
+        public void Destroy()
         {
-            a.IsDestroyed = true;
-            Game.Instance.Destroy(a);
+            IsDestroyed = true;
+            Game.Instance.Destroy(this);
+
+            foreach (Component c in components)
+                c.Destroy();
+            components = null;
         }
 
         internal virtual void Start()
@@ -85,19 +92,39 @@ namespace GameProject.Engine
             
         }
 
-        internal void EngineUpdate(GameTime gameTime)
+        internal void EngineUpdate()
         {
-            Update(gameTime);
+            Update();
 
             foreach (Component component in components)
             {
-                component.Update(gameTime);
+                component.Update();
             }
         }
 
-        internal abstract void Update(GameTime gameTime);
+        internal abstract void Update();
 
-        internal virtual void Draw(GameTime gameTime)
+        internal void EngineFixedUpdate()
+        {
+            FixedUpdate();
+
+            foreach (Component component in components)
+            {
+                component.FixedUpdate();
+            }
+        }
+
+        internal virtual void FixedUpdate()
+        {
+
+        }
+
+        internal virtual void Draw()
+        {
+
+        }
+
+        internal virtual void OnTriggerEnter(RectangleCollider collider, Actor other, RectangleCollider otherCollider)
         {
 
         }
