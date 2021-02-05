@@ -13,11 +13,7 @@ namespace GameProject.Actors
     {
         private Texture2D sprite;
         private Rigidbody2D rigidbody;
-
-        public Player(Game game) : base(game)
-        {
-
-        }
+        private Actor boomerang;
 
         internal override void Start()
         {
@@ -25,14 +21,18 @@ namespace GameProject.Actors
 
             rigidbody = AddComponent(new Rigidbody2D(this)) as Rigidbody2D;
             rigidbody.MaxVelocity = 400;
-            rigidbody.Drag = 100f;
+            rigidbody.Drag = 0.25f;
 
             AddComponent(new PlayerController(this));
         }
 
         internal override void Update(GameTime gameTime)
         {
-            
+            if (boomerang != null && boomerang.IsDestroyed)
+                boomerang = null;
+
+            if (boomerang == null && InputManager.UseTool && Utilities.IsOnScreen(InputManager.MouseLocation))
+                boomerang = Instantiate(new Boomerang(Position, InputManager.MouseLocation.ScreenToWorldspace(), this));
         }
 
         internal override void LoadContent(ContentManager content)

@@ -20,32 +20,23 @@ namespace GameProject.Components
         {
             base.Update(gameTime);
 
-            if (!float.IsInfinity(MaxAcceleration) && Acceleration.Length() > MaxAcceleration)
-            {
-                Acceleration = Vector2.Normalize(Acceleration);
-                Acceleration *= MaxAcceleration;
-            }
-            Velocity += Acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (!float.IsInfinity(MaxVelocity) && Velocity.Length() > MaxVelocity)
+            if (!float.IsInfinity(MaxAcceleration) && Acceleration.LengthSquared() > (MaxAcceleration * MaxAcceleration))
             {
-                Velocity = Vector2.Normalize(Velocity);
-                Velocity *= MaxVelocity;
+                Acceleration = Acceleration.SetLength(MaxAcceleration);
             }
-            Attached.Position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Velocity += Acceleration * deltaTime;
+
+            if (!float.IsInfinity(MaxVelocity) && Velocity.LengthSquared() > (MaxVelocity * MaxVelocity))
+            {
+                Velocity = Velocity.SetLength(MaxVelocity);
+            }
+            Attached.Position += Velocity * deltaTime;
 
             if (Drag != 0)
             {
-                Vector2 dragVelocity = Velocity;
-                if (Velocity.X != 0)
-                {
-                    dragVelocity.X += (float.IsNegative(Velocity.X) ? 1 : -1) * Drag * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-                if (Velocity.Y != 0)
-                {
-                    dragVelocity.Y += (float.IsNegative(Velocity.Y) ? 1 : -1) * Drag * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-                Velocity = dragVelocity;
+                Velocity -= Drag * Velocity * deltaTime;
             }
 
         }

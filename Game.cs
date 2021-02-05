@@ -9,6 +9,8 @@ namespace GameProject
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        public static Game Instance { get; private set; }
+
         public SpriteBatch SpriteBatch { get; private set; }
         public int DisplayWidth => _graphics.PreferredBackBufferWidth;
         public int DisplayHeight => _graphics.PreferredBackBufferHeight;
@@ -18,6 +20,7 @@ namespace GameProject
         private GraphicsDeviceManager _graphics;
         private List<Actor> actors;
         private List<Actor> toDestroy;
+        private bool contentLoaded = false;
 
         public Game()
         {
@@ -28,6 +31,8 @@ namespace GameProject
             //Window.IsBorderless = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            Instance = this;
         }
 
         protected override void Initialize()
@@ -35,7 +40,7 @@ namespace GameProject
             actors = new List<Actor>();
             toDestroy = new List<Actor>();
 
-            Instantiate(new Player(this));
+            Instantiate(new Player());
 
             base.Initialize();
         }
@@ -49,6 +54,8 @@ namespace GameProject
 
             foreach (Actor actor in actors)
                 actor.LoadContent(Content);
+
+            contentLoaded = true;
         }
 
         protected override void Update(GameTime gameTime)
@@ -94,6 +101,9 @@ namespace GameProject
             actors.Add(a);
 
             a.Start();
+
+            if (contentLoaded)
+                a.LoadContent(Content);
 
             return a;
         }

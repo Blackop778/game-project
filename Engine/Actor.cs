@@ -12,32 +12,31 @@ namespace GameProject.Engine
         public Vector2 Position { get; set; }
         public bool IsDestroyed { get; private set; }
 
-        private readonly Game game;
         private readonly List<Component> components;
 
-        public Actor(Game game)
+        public Actor() : this(Vector2.Zero) { }
+
+        public Actor(Vector2 position)
         {
-            this.game = game;
+            Position = position;
             components = new List<Component>();
             IsDestroyed = false;
         }
 
         protected void RenderSprite(Vector2 position, Texture2D sprite)
         {
-            position.X += game.DisplayWidth / 2;
-            position.Y += game.DisplayHeight / 2;
-            game.SpriteBatch.Draw(sprite, position, null, Color.White, 0,
+            Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), null, Color.White, 0,
                 new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 0);
         }
 
         protected void RenderDebugText(Vector2 position, string text)
         {
-            game.SpriteBatch.DrawString(game.DebugFont, text, position, Color.White);
+            Game.Instance.SpriteBatch.DrawString(Game.Instance.DebugFont, text, position, Color.White);
         }
 
         public Actor Instantiate(Actor a)
         {
-            return game.Instantiate(a);
+            return Game.Instance.Instantiate(a);
         }
 
         public T GetComponent<T>() where T : Component
@@ -73,7 +72,7 @@ namespace GameProject.Engine
         public void Destroy(Actor a)
         {
             a.IsDestroyed = true;
-            game.Destroy(a);
+            Game.Instance.Destroy(a);
         }
 
         internal virtual void Start()
@@ -83,7 +82,7 @@ namespace GameProject.Engine
 
         internal virtual void LoadContent(ContentManager content)
         {
-
+            
         }
 
         internal void EngineUpdate(GameTime gameTime)
