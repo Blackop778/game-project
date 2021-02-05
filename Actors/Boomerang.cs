@@ -1,4 +1,4 @@
-﻿using GameProject.Components;
+﻿using GameProject.Engine.Components;
 using GameProject.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -15,13 +15,16 @@ namespace GameProject.Actors
         private Actor user;
         private bool returning;
         private Rigidbody2D rigidbody;
-        private Texture2D sprite;
-        private RectangleCollider collider;
+        private Texture2D spritesheet;
         private int enemiesKilled = 0;
+        private int animationFrame = 0;
+        private float animationTime;
 
         private readonly float maxVelocity = 600;
         private readonly float minVelocity = 400;
         private readonly float maximumInteractRange = 50;
+        private readonly float animationFrameTime = 0.25f;
+        private readonly int spriteSize = 48;
 
         public Boomerang(Vector2 position, Vector2 destination, Actor user) : base(position) {
             this.destination = destination;
@@ -36,14 +39,15 @@ namespace GameProject.Actors
             rigidbody.MaxVelocity = maxVelocity;
             rigidbody.Drag = 140f;
 
-            collider = AddComponent(new RectangleCollider(this, Position, 16, 16));
+            AddComponent(new RectangleCollider(this, Position, spriteSize, spriteSize));
 
             returning = false;
         }
 
         internal override void Update()
         {
-            
+            animationTime += Time.deltaTime;
+            animationFrame = (int)(animationTime / animationFrameTime) % 4;
         }
 
         internal override void FixedUpdate()
@@ -71,15 +75,14 @@ namespace GameProject.Actors
         {
             base.LoadContent(content);
 
-            sprite = content.Load<Texture2D>("boomerang");
-            collider.UpdateDimensions(Position, sprite);
+            spritesheet = content.Load<Texture2D>("boomerang");
         }
 
         internal override void Draw()
         {
             base.Draw();
 
-            RenderSprite(Position, sprite);
+            RenderSpriteFromSheet(Position, spritesheet, spriteSize, spriteSize, 0, 0, animationFrame);
         }
 
         internal override void OnTriggerEnter(RectangleCollider collider, Actor other, RectangleCollider otherCollider)
@@ -111,7 +114,6 @@ namespace GameProject.Actors
 
             user = null;
             rigidbody = null;
-            collider = null;
         }
     }
 }

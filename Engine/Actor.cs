@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GameProject.Components;
+using GameProject.Engine.Components;
 
 namespace GameProject.Engine
 {
@@ -24,10 +24,18 @@ namespace GameProject.Engine
             IsDestroyed = false;
         }
 
+        #region Render methods
         protected void RenderSprite(Vector2 position, Texture2D sprite)
         {
             Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), null, Color.White, 0,
                 new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 0);
+        }
+
+        protected void RenderSpriteFromSheet(Vector2 position, Texture2D sprite, int spriteWidth, int spriteHeight, int cellX, int cellY, int frame)
+        {
+            Rectangle r = new Rectangle((cellX + frame) * spriteWidth, cellY * spriteHeight, spriteWidth, spriteHeight);
+            Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), r, Color.White, 0,
+                new Vector2(spriteWidth / 2, spriteHeight / 2), 1, SpriteEffects.None, 0);
         }
 
         protected void RenderTextScreenspace(Vector2 position, string text, SpriteFont font)
@@ -49,6 +57,7 @@ namespace GameProject.Engine
         {
             RenderTextScreenspace(position, text, Game.Instance.DebugFont);
         }
+        #endregion
 
         public Actor Instantiate(Actor a)
         {
@@ -102,21 +111,6 @@ namespace GameProject.Engine
             }
         }
 
-        public virtual void FinalDestroy()
-        {
-            components = null;
-        }
-
-        internal virtual void Start()
-        {
-
-        }
-
-        internal virtual void LoadContent(ContentManager content)
-        {
-            
-        }
-
         internal void EngineUpdate()
         {
             Update();
@@ -127,8 +121,6 @@ namespace GameProject.Engine
                     c.Update();
             }
         }
-
-        internal abstract void Update();
 
         internal void EngineFixedUpdate()
         {
@@ -141,12 +133,18 @@ namespace GameProject.Engine
             }
         }
 
-        internal virtual void FixedUpdate()
+        #region Virtual methods
+        internal virtual void Start()
         {
 
         }
 
-        internal virtual void Draw()
+        internal virtual void LoadContent(ContentManager content)
+        {
+
+        }
+
+        internal virtual void FixedUpdate()
         {
 
         }
@@ -155,5 +153,18 @@ namespace GameProject.Engine
         {
 
         }
+
+        internal abstract void Update();
+
+        internal virtual void Draw()
+        {
+
+        }
+
+        public virtual void FinalDestroy()
+        {
+            components = null;
+        }
+        #endregion
     }
 }

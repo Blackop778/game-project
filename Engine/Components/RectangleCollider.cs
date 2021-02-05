@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Components
+namespace GameProject.Engine.Components
 {
     public class RectangleCollider : Component
     {

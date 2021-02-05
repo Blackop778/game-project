@@ -1,4 +1,4 @@
-﻿using GameProject.Components;
+﻿using GameProject.Engine.Components;
 using GameProject.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using GameProject.Engine;
 using GameProject.Actors;
-using GameProject.Components;
+using GameProject.Engine;
+using GameProject.Engine.Components;
 using System;
 
 namespace GameProject
@@ -166,8 +165,9 @@ namespace GameProject
             Vector2 enemyPos;
             do
             {
-                enemyPos.X = (float)r.NextDouble() * DisplayWidth;
-                enemyPos.Y = (float)r.NextDouble() * DisplayHeight;
+                // Prevent them from spawning on the border 5% of the screen
+                enemyPos.X = ((float)r.NextDouble() * 0.9f + 0.05f) * DisplayWidth;
+                enemyPos.Y = ((float)r.NextDouble() * 0.9f + 0.05f) * DisplayHeight;
                 enemyPos = enemyPos.ScreenToWorldspace();
             } while (Vector2.Distance(playerPos, enemyPos) < 200);
 

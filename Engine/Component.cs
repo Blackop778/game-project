@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameProject.Components;
+using GameProject.Engine.Components;
 
 namespace GameProject.Engine
 {
