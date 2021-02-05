@@ -12,8 +12,12 @@ namespace GameProject.Components
 
         private Rigidbody2D rigidbody;
 
-        public PlayerController(Actor attached) : base(attached)
+        public PlayerController(Actor attached) : base(attached) { }
+
+        internal override void Start()
         {
+            base.Start();
+
             rigidbody = GetComponent<Rigidbody2D>();
         }
 
@@ -32,9 +36,9 @@ namespace GameProject.Components
             rigidbody.Velocity += instantVel;
         }
 
-        internal override void Destroy()
+        public override void FinalDestroy()
         {
-            base.Destroy();
+            base.FinalDestroy();
 
             rigidbody = null;
         }

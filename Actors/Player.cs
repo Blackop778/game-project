@@ -50,8 +50,17 @@ namespace GameProject.Actors
             base.Draw();
 
             RenderSprite(Position, sprite);
-            RenderDebugText(new Vector2(20, 20), rigidbody.Velocity.ToString());
-            RenderDebugText(new Vector2(20, 40), rigidbody.Acceleration.ToString());
+            /*RenderDebugTextScreenspace(new Vector2(20, 20), rigidbody.Velocity.ToString());
+            RenderDebugTextScreenspace(new Vector2(20, 40), rigidbody.Acceleration.ToString());*/
+        }
+
+        public override void FinalDestroy()
+        {
+            base.FinalDestroy();
+
+            rigidbody = null;
+            boomerang = null;
+            collider = null;
         }
     }
 }

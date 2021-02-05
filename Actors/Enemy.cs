@@ -41,15 +41,11 @@ namespace GameProject.Actors
             RenderSprite(Position, sprite);
         }
 
-        internal override void OnTriggerEnter(RectangleCollider collider, Actor other, RectangleCollider otherCollider)
+        public override void FinalDestroy()
         {
-            base.OnTriggerEnter(collider, other, otherCollider);
+            base.FinalDestroy();
 
-            if (other is Boomerang)
-            {
-                Destroy();
-                Game.Instance.SpawnEnemy();
-            }
+            collider = null;
         }
 
         internal override void Update()

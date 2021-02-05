@@ -9,7 +9,6 @@ namespace GameProject.Components
 {
     public class RectangleCollider : Component
     {
-        public bool IsDestroyed { get; private set; } = false;
         /// <summary>
         /// Top left corner of the rectangle
         /// </summary>
@@ -79,13 +78,6 @@ namespace GameProject.Components
             SetPositionFromCenterPoint(center);
         }
 
-        internal override void Destroy()
-        {
-            base.Destroy();
-            IsDestroyed = true;
-            Game.Instance.Destroy(this);
-        }
-
         public bool CollidesWith(RectangleCollider other)
         {
             return CollisionHelper.Collides(this, other);
@@ -94,7 +86,8 @@ namespace GameProject.Components
         public void DoCollisionTriggers(RectangleCollider other)
         {
             Attached.OnTriggerEnter(this, other.Attached, other);
-            other.Attached.OnTriggerEnter(other, Attached, this);
+            if (other.Attached != null)
+                other.Attached.OnTriggerEnter(other, Attached, this);
         }
 
         internal override void FixedUpdate()

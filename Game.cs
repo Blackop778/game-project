@@ -21,9 +21,8 @@ namespace GameProject
 
         private GraphicsDeviceManager _graphics;
         private List<Actor> actors;
-        private List<Actor> toDestroy;
+        private List<IDestroyable> toDestroy;
         private List<RectangleCollider> colliders;
-        private List<RectangleCollider> collidersToDestroy;
         private bool contentLoaded = false;
         private float timeSinceFixedUpdate = 0;
 
@@ -43,12 +42,12 @@ namespace GameProject
         protected override void Initialize()
         {
             actors = new List<Actor>();
-            toDestroy = new List<Actor>();
+            toDestroy = new List<IDestroyable>();
             colliders = new List<RectangleCollider>();
-            collidersToDestroy = new List<RectangleCollider>();
 
             Instantiate(new Player());
             SpawnEnemy();
+            Instantiate(new Scoreboard(new Vector2(20, 20)));
 
             base.Initialize();
         }
@@ -97,13 +96,19 @@ namespace GameProject
 
             while (toDestroy.Count > 0)
             {
-                actors.Remove(toDestroy[0]);
+                IDestroyable d = toDestroy[0];
+
+                d.FinalDestroy();
+
                 toDestroy.RemoveAt(0);
-            }
-            while (collidersToDestroy.Count > 0)
-            {
-                colliders.Remove(collidersToDestroy[0]);
-                collidersToDestroy.RemoveAt(0);
+                if (d is Actor a)
+                {
+                    actors.Remove(a);
+                } 
+                else if (d is RectangleCollider rc)
+                {
+                    colliders.Remove(rc);
+                }
             }
 
             base.Update(gameTime);
@@ -136,18 +141,12 @@ namespace GameProject
             return a;
         }
 
-        public void Destroy(Actor a)
+        public void Destroy(IDestroyable d)
         {
-            toDestroy.Add(a);
-            if (!a.IsDestroyed)
-                a.Destroy();
-        }
+            toDestroy.Add(d);
 
-        public void Destroy(RectangleCollider c)
-        {
-            collidersToDestroy.Add(c);
-            if (!c.IsDestroyed)
-                c.Destroy();
+            if (!d.IsDestroyed)
+                d.Destroy();
         }
 
         public void AddCollider(RectangleCollider collider)
@@ -173,6 +172,11 @@ namespace GameProject
             } while (Vector2.Distance(playerPos, enemyPos) < 200);
 
             Instantiate(new Enemy(enemyPos));
+        }
+
+        public T GetActor<T>() where T : Actor
+        {
+            return actors.Find(a => a is T) as T;
         }
     }
 }

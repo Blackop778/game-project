@@ -6,9 +6,10 @@ using GameProject.Components;
 
 namespace GameProject.Engine
 {
-    public class Component
+    public class Component : IDestroyable
     {
         protected Actor Attached { get; private set; }
+        public bool IsDestroyed { get; private set; }
 
         public Component(Actor attached)
         {
@@ -40,7 +41,16 @@ namespace GameProject.Engine
 
         }
 
-        internal virtual void Destroy()
+        public void Destroy()
+        {
+            if (IsDestroyed)
+                return;
+
+            IsDestroyed = true;
+            Game.Instance.Destroy(this);
+        }
+
+        public virtual void FinalDestroy()
         {
             Attached = null;
         }

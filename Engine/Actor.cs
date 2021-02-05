@@ -8,7 +8,7 @@ using GameProject.Components;
 
 namespace GameProject.Engine
 {
-    public abstract class Actor
+    public abstract class Actor : IDestroyable
     {
         public Vector2 Position { get; set; }
         public bool IsDestroyed { get; private set; }
@@ -30,9 +30,24 @@ namespace GameProject.Engine
                 new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 0);
         }
 
-        protected void RenderDebugText(Vector2 position, string text)
+        protected void RenderTextScreenspace(Vector2 position, string text, SpriteFont font)
         {
-            Game.Instance.SpriteBatch.DrawString(Game.Instance.DebugFont, text, position, Color.White);
+            RenderTextScreenspace(position, text, font, Color.White);
+        }
+
+        protected void RenderTextScreenspace(Vector2 position, string text, SpriteFont font, Color color)
+        {
+            Game.Instance.SpriteBatch.DrawString(font, text, position, color);
+        }
+
+        protected void RenderTextWorldspace(Vector2 position, string text, SpriteFont font)
+        {
+            RenderTextScreenspace(position.WorldToScreenspace(), text, font);
+        }
+
+        protected void RenderDebugTextScreenspace(Vector2 position, string text)
+        {
+            RenderTextScreenspace(position, text, Game.Instance.DebugFont);
         }
 
         public Actor Instantiate(Actor a)
@@ -74,11 +89,21 @@ namespace GameProject.Engine
 
         public void Destroy()
         {
+            if (IsDestroyed)
+                return;
+
             IsDestroyed = true;
             Game.Instance.Destroy(this);
 
             foreach (Component c in components)
-                c.Destroy();
+            {
+                if(!c.IsDestroyed)
+                    c.Destroy();
+            }
+        }
+
+        public virtual void FinalDestroy()
+        {
             components = null;
         }
 
@@ -96,9 +121,10 @@ namespace GameProject.Engine
         {
             Update();
 
-            foreach (Component component in components)
+            foreach (Component c in components)
             {
-                component.Update();
+                if (!c.IsDestroyed)
+                    c.Update();
             }
         }
 
@@ -108,9 +134,10 @@ namespace GameProject.Engine
         {
             FixedUpdate();
 
-            foreach (Component component in components)
+            foreach (Component c in components)
             {
-                component.FixedUpdate();
+                if (!c.IsDestroyed)
+                    c.FixedUpdate();
             }
         }
 

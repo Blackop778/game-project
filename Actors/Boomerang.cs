@@ -12,11 +12,12 @@ namespace GameProject.Actors
     class Boomerang : Actor
     {
         private Vector2 destination;
-        private readonly Actor user;
+        private Actor user;
         private bool returning;
         private Rigidbody2D rigidbody;
         private Texture2D sprite;
         private RectangleCollider collider;
+        private int enemiesKilled = 0;
 
         private readonly float maxVelocity = 600;
         private readonly float minVelocity = 400;
@@ -33,7 +34,7 @@ namespace GameProject.Actors
 
             rigidbody = AddComponent(new Rigidbody2D(this));
             rigidbody.MaxVelocity = maxVelocity;
-            rigidbody.Drag = 77f;
+            rigidbody.Drag = 140f;
 
             collider = AddComponent(new RectangleCollider(this, Position, 16, 16));
 
@@ -87,6 +88,30 @@ namespace GameProject.Actors
 
             if (returning && other == user)
                 Destroy();
+            else if (other is Enemy)
+            {
+                other.Destroy();
+                Game.Instance.SpawnEnemy();
+
+                enemiesKilled++;
+
+                Scoreboard s = Game.Instance.GetActor<Scoreboard>();
+                if (s != null)
+                {
+                    s.EnemiesKilled++;
+                    if (enemiesKilled > s.EnemiesKilledStreak)
+                        s.EnemiesKilledStreak = enemiesKilled;
+                }
+            }
+        }
+
+        public override void FinalDestroy()
+        {
+            base.FinalDestroy();
+
+            user = null;
+            rigidbody = null;
+            collider = null;
         }
     }
 }
