@@ -44,6 +44,18 @@
 /processorParam:TextureFormat=Color
 /build:boomerang.png
 
+#begin boomerang_catch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:boomerang_catch.wav
+
+#begin boomerang_flight.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:boomerang_flight.wav
+
 #begin debug.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -62,6 +74,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:enemy.png
+
+#begin enemy_death.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:enemy_death.wav
 
 #begin Oval.png
 /importer:TextureImporter

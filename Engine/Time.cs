@@ -7,11 +7,13 @@ namespace GameProject.Engine
 {
     public static class Time
     {
+        public static float time;
         public static float deltaTime;
         public static float fixedDeltaTime = 0.01f;
 
         public static void UpdateTime(GameTime gameTime)
         {
+            time = (float)gameTime.TotalGameTime.TotalSeconds;
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
     }

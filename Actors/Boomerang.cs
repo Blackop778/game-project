@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject.Actors
 {
@@ -16,6 +17,9 @@ namespace GameProject.Actors
         private bool returning;
         private Rigidbody2D rigidbody;
         private Texture2D spritesheet;
+        private SoundEffect enemyDeathSound;
+        private SoundEffectInstance flightSound;
+        private SoundEffect catchSound;
         private int enemiesKilled = 0;
         private int animationFrame = 0;
         private float animationTime;
@@ -76,6 +80,13 @@ namespace GameProject.Actors
             base.LoadContent(content);
 
             spritesheet = content.Load<Texture2D>("boomerang");
+            enemyDeathSound = content.Load<SoundEffect>("enemy_death");
+
+            flightSound = content.Load<SoundEffect>("boomerang_flight").CreateInstance();
+            flightSound.IsLooped = true;
+            flightSound.Play();
+
+            catchSound = content.Load<SoundEffect>("boomerang_catch");
         }
 
         internal override void Draw()
@@ -90,11 +101,15 @@ namespace GameProject.Actors
             base.OnTriggerEnter(collider, other, otherCollider);
 
             if (returning && other == user)
+            {
                 Destroy();
+                catchSound.Play();
+            }
             else if (other is Enemy)
             {
                 other.Destroy();
                 Game.Instance.SpawnEnemy();
+                enemyDeathSound.Play();
 
                 enemiesKilled++;
 
@@ -112,8 +127,11 @@ namespace GameProject.Actors
         {
             base.FinalDestroy();
 
+            flightSound.Stop();
+
             user = null;
             rigidbody = null;
+            flightSound = null;
         }
     }
 }
