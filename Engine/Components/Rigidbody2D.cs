@@ -12,6 +12,7 @@ namespace GameProject.Engine.Components
         public Vector2 Acceleration { get; set; } = Vector2.Zero;
         public float MaxVelocity { get; set; } = float.PositiveInfinity;
         public float MaxAcceleration { get; set; } = float.PositiveInfinity;
+        public bool IsDragEnabled { get; set; } = true;
         public float Drag { get; set; } = 0;
 
         public Rigidbody2D(Actor attached) : base(attached) { }
@@ -20,7 +21,7 @@ namespace GameProject.Engine.Components
         {
             base.Update();
 
-            float deltaTime = Time.fixedDeltaTime;
+            float deltaTime = Time.DeltaTime;
 
             if (!float.IsInfinity(MaxAcceleration) && Acceleration.LengthSquared() > (MaxAcceleration * MaxAcceleration))
             {
@@ -34,8 +35,8 @@ namespace GameProject.Engine.Components
             }
             Attached.Position += Velocity * deltaTime;
 
-            float velocityMag;
-            if (Drag != 0 && (velocityMag = Velocity.LengthSquared()) != 0)
+            float velocityMag = Velocity.LengthSquared();
+            if (IsDragEnabled && Drag != 0 && velocityMag != 0)
             {
                 Vector2 newVelocity = Velocity;
 

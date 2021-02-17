@@ -22,8 +22,8 @@ namespace GameProject.Actors
             base.Start();
 
             Rigidbody = AddComponent(new Rigidbody2D(this));
-            Rigidbody.MaxVelocity = 400;
-            Rigidbody.Drag = 100f;
+            Rigidbody.MaxVelocity = 400f;
+            Rigidbody.Drag = 500f;
 
             AddComponent(new PlayerController(this));
             collider = AddComponent(new RectangleCollider(this, Position, 64, 128));

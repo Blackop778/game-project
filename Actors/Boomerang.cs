@@ -50,7 +50,7 @@ namespace GameProject.Actors
 
         internal override void Update()
         {
-            animationTime += Time.deltaTime;
+            animationTime += Time.DeltaTime;
             animationFrame = (int)(animationTime / animationFrameTime) % 4;
         }
 
@@ -72,7 +72,7 @@ namespace GameProject.Actors
             else if (instantVel.LengthSquared() > (maxVelocity * maxVelocity))
                 instantVel = instantVel.SetLength(maxVelocity);
 
-            rigidbody.Velocity += instantVel * Time.fixedDeltaTime;
+            rigidbody.Velocity += instantVel * Time.DeltaTime;
         }
 
         internal override void LoadContent(ContentManager content)

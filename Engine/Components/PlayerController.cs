@@ -25,15 +25,16 @@ namespace GameProject.Engine.Components
         {
             base.Update();
 
-            Vector2 instantVel = InputManager.Direction * Acceleration * Time.deltaTime;
+            Vector2 instantVel = InputManager.Direction * Acceleration * Time.DeltaTime;
 
             // Make stopping faster
             if (Vector2.Dot(Vector2.Normalize(instantVel), Vector2.Normalize(rigidbody.Velocity)) < 0.25f)
             {
-                instantVel *= 1.5f;
+                instantVel *= 2f;
             }
 
             rigidbody.Velocity += instantVel;
+            rigidbody.IsDragEnabled = instantVel.LengthSquared() < 1f;
         }
 
         public override void FinalDestroy()

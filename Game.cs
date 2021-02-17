@@ -74,19 +74,21 @@ namespace GameProject
             if (InputManager.Exit)
                 Exit();
 
-            timeSinceFixedUpdate += Time.deltaTime;
-            while (timeSinceFixedUpdate > Time.fixedDeltaTime)
+            Time.IsInFixedUpdate = true;
+            timeSinceFixedUpdate += Time.UpdateDeltaTime;
+            while (timeSinceFixedUpdate > Time.FixedDeltaTime)
             {
-                timeSinceFixedUpdate -= Time.fixedDeltaTime;
+                timeSinceFixedUpdate -= Time.FixedDeltaTime;
                 for (int i = 0; i < actors.Count; i++)
                 {
                     Actor actor = actors[i];
                     if (!actor.IsDestroyed)
                         actor.EngineFixedUpdate();
                 }
-            }
 
-            CollisionHelper.CheckCollision(colliders);
+                CollisionHelper.CheckCollision(colliders);
+            }
+            Time.IsInFixedUpdate = false;
 
             for (int i = 0; i < actors.Count; i++)
             {
