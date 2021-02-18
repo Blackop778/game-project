@@ -40,8 +40,9 @@ namespace GameProject.Engine.Components
             {
                 Vector2 newVelocity = Velocity;
 
-                newVelocity.X += (newVelocity.X * newVelocity.X) / velocityMag * Drag * deltaTime * (float.IsNegative(Velocity.X) ? 1 : -1);
-                newVelocity.Y += (newVelocity.Y * newVelocity.Y) / velocityMag * Drag * deltaTime * (float.IsNegative(Velocity.Y) ? 1 : -1);
+                // Prevent from dragging more than the actual velocity
+                newVelocity.X += MathF.Min((newVelocity.X * newVelocity.X) / velocityMag * Drag * deltaTime, MathF.Abs(newVelocity.X)) * (float.IsNegative(Velocity.X) ? 1 : -1);
+                newVelocity.Y += MathF.Min((newVelocity.Y * newVelocity.Y) / velocityMag * Drag * deltaTime, MathF.Abs(newVelocity.Y)) * (float.IsNegative(Velocity.Y) ? 1 : -1);
 
                 Velocity = newVelocity;
             }

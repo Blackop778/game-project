@@ -24,6 +24,7 @@ namespace GameProject
         private List<RectangleCollider> colliders;
         private bool contentLoaded = false;
         private float timeSinceFixedUpdate = 0;
+        private FrameCounter _frameCounter = new FrameCounter();
 
         public Game()
         {
@@ -46,6 +47,7 @@ namespace GameProject
             colliders = new List<RectangleCollider>();
 
             SpawnBlockersAroundScreen();
+            Instantiate(new TilemapRenderer(new Vector2(-DisplayWidth / 2 + 32, DisplayHeight / 2 - 32), TMXParser.ParseTilemap("Content/testTilemap.tmx"), "testTilemapSpritesheet", 64));
             Instantiate(new Player());
             SpawnEnemy();
             Instantiate(new Scoreboard(new Vector2(20, 20)));
@@ -122,6 +124,9 @@ namespace GameProject
             GraphicsDevice.Clear(Color.Green);
 
             SpriteBatch.Begin();
+
+            //_frameCounter.Draw(gameTime, SpriteBatch, DebugFont);
+
             foreach (Actor actor in actors)
             {
                 if (!actor.IsDestroyed)

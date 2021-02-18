@@ -25,35 +25,35 @@ namespace GameProject.Engine
         }
 
         #region Render methods
-        protected void RenderSprite(Vector2 position, Texture2D sprite)
+        public void RenderSprite(Vector2 position, Texture2D sprite)
         {
             Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), null, Color.White, 0,
                 new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 0);
         }
 
-        protected void RenderSpriteFromSheet(Vector2 position, Texture2D sprite, int spriteWidth, int spriteHeight, int cellX, int cellY, int frame)
+        public void RenderSpriteFromSheet(Vector2 position, Texture2D sprite, int spriteWidth, int spriteHeight, int cellX, int cellY, int frame)
         {
             Rectangle r = new Rectangle((cellX + frame) * spriteWidth, cellY * spriteHeight, spriteWidth, spriteHeight);
             Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), r, Color.White, 0,
                 new Vector2(spriteWidth / 2, spriteHeight / 2), 1, SpriteEffects.None, 0);
         }
 
-        protected void RenderTextScreenspace(Vector2 position, string text, SpriteFont font)
+        public void RenderTextScreenspace(Vector2 position, string text, SpriteFont font)
         {
             RenderTextScreenspace(position, text, font, Color.White);
         }
 
-        protected void RenderTextScreenspace(Vector2 position, string text, SpriteFont font, Color color)
+        public void RenderTextScreenspace(Vector2 position, string text, SpriteFont font, Color color)
         {
             Game.Instance.SpriteBatch.DrawString(font, text, position, color);
         }
 
-        protected void RenderTextWorldspace(Vector2 position, string text, SpriteFont font)
+        public void RenderTextWorldspace(Vector2 position, string text, SpriteFont font)
         {
             RenderTextScreenspace(position.WorldToScreenspace(), text, font);
         }
 
-        protected void RenderDebugTextScreenspace(Vector2 position, string text)
+        public void RenderDebugTextScreenspace(Vector2 position, string text)
         {
             RenderTextScreenspace(position, text, Game.Instance.DebugFont);
         }
