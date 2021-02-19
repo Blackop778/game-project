@@ -47,10 +47,10 @@ namespace GameProject
             colliders = new List<RectangleCollider>();
 
             SpawnBlockersAroundScreen();
-            Instantiate(new TilemapRenderer(new Vector2(-DisplayWidth / 2 + 32, DisplayHeight / 2 - 32), TMXParser.ParseTilemap("Content/testTilemap.tmx"), "testTilemapSpritesheet", 64));
+            Instantiate(new TilemapRenderer(new Vector2(-DisplayWidth / 2 + 32, DisplayHeight / 2 - (56 + 32)), TMXParser.ParseTilemap("Content/game.tmx"), "BackgroundSheet", 64));
             Instantiate(new Player());
             SpawnEnemy();
-            Instantiate(new Scoreboard(new Vector2(20, 20)));
+            Instantiate(new Scoreboard(new Vector2(20, 10)));
 
             base.Initialize();
         }
@@ -63,7 +63,7 @@ namespace GameProject
             DebugPixel = Content.Load<Texture2D>("1x1WhitePixel");
 
             foreach (Actor actor in actors)
-                actor.LoadContent(Content);
+                actor.EngineLoadContent(Content);
 
             contentLoaded = true;
         }
@@ -121,7 +121,7 @@ namespace GameProject
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Green);
+            GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin();
 
@@ -130,7 +130,7 @@ namespace GameProject
             foreach (Actor actor in actors)
             {
                 if (!actor.IsDestroyed)
-                    actor.Draw();
+                    actor.EngineDraw();
             }
             SpriteBatch.End();
 
@@ -144,7 +144,7 @@ namespace GameProject
             a.Start();
 
             if (contentLoaded)
-                a.LoadContent(Content);
+                a.EngineLoadContent(Content);
 
             return a;
         }
@@ -176,7 +176,7 @@ namespace GameProject
             {
                 // Prevent them from spawning on the border 5% of the screen
                 enemyPos.X = ((float)r.NextDouble() * 0.9f + 0.05f) * DisplayWidth;
-                enemyPos.Y = ((float)r.NextDouble() * 0.9f + 0.05f) * DisplayHeight;
+                enemyPos.Y = ((float)r.NextDouble() * 0.8f + 0.1f) * DisplayHeight;
                 enemyPos = enemyPos.ScreenToWorldspace();
             } while (Vector2.Distance(playerPos, enemyPos) < 200);
 
@@ -190,10 +190,10 @@ namespace GameProject
 
         public void SpawnBlockersAroundScreen()
         {
-            Instantiate(new PlayerBlocker(new Vector2(0, DisplayHeight / 2 + 501), Direction.Top));
-            Instantiate(new PlayerBlocker(new Vector2(0, -DisplayHeight / 2 - 501), Direction.Bottom));
-            Instantiate(new PlayerBlocker(new Vector2(-DisplayWidth / 2 - 501, 0), Direction.Left));
-            Instantiate(new PlayerBlocker(new Vector2(DisplayWidth / 2 + 501, 0), Direction.Right));
+            Instantiate(new PlayerBlocker(new Vector2(0, DisplayHeight / 2 + 501 - (64 + 56)), Direction.Top));
+            Instantiate(new PlayerBlocker(new Vector2(0, -DisplayHeight / 2 - 501 + 64), Direction.Bottom));
+            Instantiate(new PlayerBlocker(new Vector2(-DisplayWidth / 2 - 501 + 64, 0), Direction.Left));
+            Instantiate(new PlayerBlocker(new Vector2(DisplayWidth / 2 + 501 - 64, 0), Direction.Right));
         }
     }
 }

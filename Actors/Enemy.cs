@@ -26,7 +26,7 @@ namespace GameProject.Actors
             collider = AddComponent(new RectangleCollider(this, Position, 64, 64));
         }
 
-        internal override void LoadContent(ContentManager content)
+        protected override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
 
@@ -34,7 +34,7 @@ namespace GameProject.Actors
             collider.UpdateDimensions(Position, sprite);
         }
 
-        internal override void Draw()
+        protected override void Draw()
         {
             base.Draw();
 

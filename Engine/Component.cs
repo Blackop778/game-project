@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GameProject.Engine.Components;
+using Microsoft.Xna.Framework.Content;
 
 namespace GameProject.Engine
 {
@@ -41,12 +42,22 @@ namespace GameProject.Engine
 
         }
 
+        internal virtual void LoadContent(ContentManager content)
+        {
+
+        }
+
         internal virtual void FixedUpdate()
         {
 
         }
 
         internal virtual void Update()
+        {
+
+        }
+
+        internal virtual void Draw()
         {
 
         }

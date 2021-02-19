@@ -29,7 +29,7 @@ namespace GameProject.Actors
             collider = AddComponent(new RectangleCollider(this, Position, 64, 128));
         }
 
-        internal override void Update()
+        protected override void Update()
         {
             if (boomerang != null && boomerang.IsDestroyed)
                 boomerang = null;
@@ -38,7 +38,7 @@ namespace GameProject.Actors
                 boomerang = Instantiate(new Boomerang(Position, InputManager.MouseLocation.ScreenToWorldspace(), this));
         }
 
-        internal override void LoadContent(ContentManager content)
+        protected override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
 
@@ -46,7 +46,7 @@ namespace GameProject.Actors
             collider.UpdateDimensions(Position, sprite);
         }
 
-        internal override void Draw()
+        protected override void Draw()
         {
             base.Draw();
 

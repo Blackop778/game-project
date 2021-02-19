@@ -23,14 +23,14 @@ namespace GameProject.Actors
 
         }
 
-        internal override void LoadContent(ContentManager content)
+        protected override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
 
             bangers = content.Load<SpriteFont>("bangers");
         }
 
-        internal override void Draw()
+        protected override void Draw()
         {
             base.Draw();
 

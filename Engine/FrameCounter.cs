@@ -51,7 +51,7 @@ namespace GameProject.Engine
 
             Update(deltaTime);
 
-            spriteBatch.DrawString(font, $"FPS: {AverageFramesPerSecond:F}", new Vector2(1, 1), Color.Black);
+            spriteBatch.DrawString(font, $"FPS: {AverageFramesPerSecond:F}", new Vector2(1, 1), Color.White);
         }
     }
 }

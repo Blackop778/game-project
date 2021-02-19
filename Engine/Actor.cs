@@ -14,6 +14,7 @@ namespace GameProject.Engine
         public bool IsDestroyed { get; private set; }
 
         private List<Component> components;
+        private bool contentLoaded = false;
 
         public Actor() : this(Vector2.Zero) { }
 
@@ -29,6 +30,15 @@ namespace GameProject.Engine
         {
             Game.Instance.SpriteBatch.Draw(sprite, position.WorldToScreenspace(), null, Color.White, 0,
                 new Vector2(sprite.Width / 2, sprite.Height / 2), 1, SpriteEffects.None, 0);
+        }
+
+        public void RenderSprite(Rectangle destination, Texture2D sprite, Color color, float depth = 0f)
+        {
+            Vector2 offset = new Vector2(destination.X, destination.Y).WorldToScreenspace();
+            destination.X = (int)offset.X;
+            destination.Y = (int)offset.Y;
+
+            Game.Instance.SpriteBatch.Draw(sprite, destination, null, color, 0f, Vector2.Zero, SpriteEffects.None, depth);
         }
 
         public void RenderSpriteFromSheet(Vector2 position, Texture2D sprite, int spriteWidth, int spriteHeight, int cellX, int cellY, int frame)
@@ -93,6 +103,9 @@ namespace GameProject.Engine
 
             component.Start();
 
+            if (contentLoaded)
+                component.LoadContent(Game.Instance.Content);
+
             return component;
         }
 
@@ -108,6 +121,18 @@ namespace GameProject.Engine
             {
                 if(!c.IsDestroyed)
                     c.Destroy();
+            }
+        }
+
+        internal void EngineLoadContent(ContentManager content)
+        {
+            LoadContent(content);
+
+            contentLoaded = true;
+            foreach (Component c in components)
+            {
+                if (!c.IsDestroyed)
+                    c.LoadContent(content);
             }
         }
 
@@ -133,18 +158,29 @@ namespace GameProject.Engine
             }
         }
 
+        internal void EngineDraw()
+        {
+            Draw();
+
+            foreach (Component c in components)
+            {
+                if (!c.IsDestroyed)
+                    c.Draw();
+            }
+        }
+
         #region Virtual methods
         internal virtual void Start()
         {
 
         }
 
-        internal virtual void LoadContent(ContentManager content)
+        protected virtual void LoadContent(ContentManager content)
         {
 
         }
 
-        internal virtual void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
 
         }
@@ -154,12 +190,12 @@ namespace GameProject.Engine
 
         }
 
-        internal virtual void Update()
+        protected virtual void Update()
         {
 
         }
 
-        internal virtual void Draw()
+        protected virtual void Draw()
         {
 
         }

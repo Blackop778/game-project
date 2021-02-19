@@ -48,13 +48,13 @@ namespace GameProject.Actors
             returning = false;
         }
 
-        internal override void Update()
+        protected override void Update()
         {
             animationTime += Time.DeltaTime;
             animationFrame = (int)(animationTime / animationFrameTime) % 4;
         }
 
-        internal override void FixedUpdate()
+        protected override void FixedUpdate()
         {
             if (returning)
                 destination = user.Position;
@@ -75,7 +75,7 @@ namespace GameProject.Actors
             rigidbody.Velocity += instantVel * Time.DeltaTime;
         }
 
-        internal override void LoadContent(ContentManager content)
+        protected override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
 
@@ -89,7 +89,7 @@ namespace GameProject.Actors
             catchSound = content.Load<SoundEffect>("boomerang_catch");
         }
 
-        internal override void Draw()
+        protected override void Draw()
         {
             base.Draw();
 

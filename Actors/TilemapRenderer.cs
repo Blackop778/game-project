@@ -24,7 +24,7 @@ namespace GameProject.Actors
             this.tileSize = tileSize;
         }
 
-        internal override void LoadContent(ContentManager content)
+        protected override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);
 
@@ -33,7 +33,7 @@ namespace GameProject.Actors
             sheetTileCountY = spritesheet.Height / tileSize;
         }
 
-        internal override void Draw()
+        protected override void Draw()
         {
             base.Draw();
 

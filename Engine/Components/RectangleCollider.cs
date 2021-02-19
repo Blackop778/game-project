@@ -1,5 +1,6 @@
 ﻿using GameProject.Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace GameProject.Engine.Components
 {
     public class RectangleCollider : Component
     {
+        private Texture2D pixel;
+
         /// <summary>
         /// Top left corner of the rectangle
         /// </summary>
@@ -95,6 +98,31 @@ namespace GameProject.Engine.Components
             base.FixedUpdate();
 
             SetPositionFromCenterPoint(Attached.Position);
+        }
+
+        internal override void LoadContent(ContentManager content)
+        {
+            base.LoadContent(content);
+
+            pixel = content.Load<Texture2D>("1x1WhitePixel");
+        }
+
+        internal override void Draw()
+        {
+            base.Draw();
+
+            if (Debug.DISPLAY_COLLIDERS)
+            {
+                int iX = (int)(X);
+                int iY = (int)(Y);
+                int iW = (int)Width;
+                int iH = (int)Height;
+
+                Attached.RenderSprite(new Rectangle(iX, iY, 1, iH), pixel, Color.LightGreen, 1f);
+                Attached.RenderSprite(new Rectangle(iX, iY, iW, 1), pixel, Color.LightGreen, 1f);
+                Attached.RenderSprite(new Rectangle(iX + iW, iY, 1, iH), pixel, Color.LightGreen, 1f);
+                Attached.RenderSprite(new Rectangle(iX, iY - iH, iW, 1), pixel, Color.LightGreen, 1f);
+            }
         }
     }
 }

@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:1x1WhitePixel.png
 
+#begin BackgroundSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:BackgroundSheet.png
+
 #begin bangers.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -81,6 +93,9 @@
 /processorParam:Quality=Best
 /build:enemy_death.wav
 
+#begin game.tmx
+/copy:game.tmx
+
 #begin Oval.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -92,19 +107,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Oval.png
-
-#begin testTilemap.tmx
-/copy:testTilemap.tmx
-
-#begin testTilemapSpritesheet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:testTilemapSpritesheet.png
 
