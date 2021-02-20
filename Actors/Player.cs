@@ -34,7 +34,7 @@ namespace GameProject.Actors
             if (boomerang != null && boomerang.IsDestroyed)
                 boomerang = null;
 
-            if (boomerang == null && InputManager.UseTool && Utilities.IsOnScreen(InputManager.MouseLocation))
+            if (boomerang == null && InputManager.UseTool && Game.Instance.GetPlayBounds(0).Contains(InputManager.MouseLocation))
                 boomerang = Instantiate(new Boomerang(Position, InputManager.MouseLocation.ScreenToWorldspace(), this));
         }
 

@@ -6,6 +6,7 @@ using GameProject.Engine;
 using GameProject.Engine.Components;
 using System;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -46,6 +47,8 @@ namespace GameProject
             actors = new List<Actor>();
             toDestroy = new List<IDestroyable>();
             colliders = new List<RectangleCollider>();
+
+            //SoundEffect.MasterVolume = 0;
 
             SpawnBlockersAroundScreen();
             Instantiate(new TilemapRenderer(new Vector2(-DisplayWidth / 2 + 32, DisplayHeight / 2 - (56 + 32)), TMXParser.ParseTilemap("Content/game.tmx"), "BackgroundSheet", 64));
@@ -187,20 +190,27 @@ namespace GameProject
             Instantiate(new Bomb(GetPositionAwayFromPoint(playerPos, 400f)));
         }
 
+        public Rectangle GetPlayBounds(int inset)
+        {
+            int displayLeft = 64 + inset;
+            int displayRight = DisplayWidth - 64 - inset;
+            int widthRange = displayRight - displayLeft;
+            int displayTop = 56 + 64 + inset;
+            int displayBottom = DisplayHeight - 64 - inset;
+            int heightRange = displayBottom - displayTop;
+
+            return new Rectangle(displayLeft, displayTop, widthRange, heightRange);
+        }
+
         private Vector2 GetPositionAwayFromPoint(Vector2 point, float distanceFromPlayer)
         {
             Vector2 pos;
             do
             {
-                int displayLeft = 64 + 32;
-                int displayRight = DisplayWidth - 64 - 32;
-                int widthRange = displayRight - displayLeft;
-                int displayTop = 56 + 64 + 32;
-                int displayBottom = DisplayHeight - 64 - 32;
-                int heightRange = displayBottom - displayTop;
+                Rectangle bounds = GetPlayBounds(32);
                 // Prevent them from spawning on the border 5% of the screen
-                pos.X = ((float)Utilities.random.NextDouble() * widthRange) + displayLeft;
-                pos.Y = ((float)Utilities.random.NextDouble() * heightRange) + displayTop;
+                pos.X = ((float)Utilities.random.NextDouble() * bounds.Width) + bounds.Left;
+                pos.Y = ((float)Utilities.random.NextDouble() * bounds.Height) + bounds.Top;
                 pos = pos.ScreenToWorldspace();
             } while (Vector2.Distance(point, pos) < distanceFromPlayer);
 
@@ -219,10 +229,10 @@ namespace GameProject
 
         public void SpawnBlockersAroundScreen()
         {
-            Instantiate(new PlayerBlocker(new Vector2(0, DisplayHeight / 2 + 501 - (64 + 56)), Direction.Top));
-            Instantiate(new PlayerBlocker(new Vector2(0, -DisplayHeight / 2 - 501 + 64), Direction.Bottom));
-            Instantiate(new PlayerBlocker(new Vector2(-DisplayWidth / 2 - 501 + 64, 0), Direction.Left));
-            Instantiate(new PlayerBlocker(new Vector2(DisplayWidth / 2 + 501 - 64, 0), Direction.Right));
+            Instantiate(new DirectionalBlocker(new Vector2(0, DisplayHeight / 2 + 501 - (64 + 56)), Direction.Top));
+            Instantiate(new DirectionalBlocker(new Vector2(0, -DisplayHeight / 2 - 501 + 64), Direction.Bottom));
+            Instantiate(new DirectionalBlocker(new Vector2(-DisplayWidth / 2 - 501 + 64, 0), Direction.Left));
+            Instantiate(new DirectionalBlocker(new Vector2(DisplayWidth / 2 + 501 - 64, 0), Direction.Right));
         }
     }
 }

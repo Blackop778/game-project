@@ -15,7 +15,7 @@ namespace GameProject.Actors
         Right
     }
 
-    class PlayerBlocker : Actor
+    class DirectionalBlocker : Actor
     {
         private readonly Direction direction;
 
@@ -24,7 +24,7 @@ namespace GameProject.Actors
         /// </summary>
         /// <param name="position"></param>
         /// <param name="direction">Where this blocker is relative to the screen</param>
-        public PlayerBlocker(Vector2 position, Direction direction) : base(position)
+        public DirectionalBlocker(Vector2 position, Direction direction) : base(position)
         {
             this.direction = direction;
         }
@@ -62,6 +62,24 @@ namespace GameProject.Actors
                         direction == Direction.Right ? collider.Left - (otherCollider.HalfWidth + 2) : collider.Right + (otherCollider.HalfWidth + 2),
                         other.Position.Y);
                     p.Rigidbody.Velocity = new Vector2(0, p.Rigidbody.Velocity.Y);
+                }
+            }
+            else if (other is Boomerang b)
+            {
+                if (direction == Direction.Top || direction == Direction.Bottom)
+                {
+                    other.Position = new Vector2(other.Position.X,
+                        direction == Direction.Top ? collider.Bottom - (otherCollider.HalfHeight + 2) : collider.Top + (otherCollider.HalfHeight + 2));
+                    b.Rigidbody.Velocity = new Vector2(b.Rigidbody.Velocity.X, -b.Rigidbody.Velocity.Y) * 0.5f;
+                    b.Rigidbody.Acceleration = new Vector2(b.Rigidbody.Acceleration.X, -b.Rigidbody.Acceleration.Y);
+                }
+                else
+                {
+                    other.Position = new Vector2(
+                        direction == Direction.Right ? collider.Left - (otherCollider.HalfWidth + 2) : collider.Right + (otherCollider.HalfWidth + 2),
+                        other.Position.Y);
+                    b.Rigidbody.Velocity = new Vector2(-b.Rigidbody.Velocity.X, b.Rigidbody.Velocity.Y) * 0.5f;
+                    b.Rigidbody.Acceleration = new Vector2(-b.Rigidbody.Acceleration.X, b.Rigidbody.Acceleration.Y);
                 }
             }
         }

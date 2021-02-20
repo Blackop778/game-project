@@ -12,10 +12,11 @@ namespace GameProject.Actors
 {
     class Boomerang : Actor
     {
+        public Rigidbody2D Rigidbody { get; private set; }
+
         private Vector2 destination;
         private Actor user;
         private bool returning;
-        private Rigidbody2D rigidbody;
         private Texture2D spritesheet;
         private SoundEffect enemyDeathSound;
         private SoundEffectInstance flightSound;
@@ -39,9 +40,9 @@ namespace GameProject.Actors
         {
             base.Start();
 
-            rigidbody = AddComponent(new Rigidbody2D(this));
-            rigidbody.MaxVelocity = maxVelocity;
-            rigidbody.Drag = 140f;
+            Rigidbody = AddComponent(new Rigidbody2D(this));
+            Rigidbody.MaxVelocity = maxVelocity;
+            Rigidbody.Drag = 140f;
 
             AddComponent(new RectangleCollider(this, Position, spriteSize, spriteSize));
 
@@ -76,7 +77,7 @@ namespace GameProject.Actors
             else if (instantVel.LengthSquared() > (maxVelocity * maxVelocity))
                 instantVel = instantVel.SetLength(maxVelocity);
 
-            rigidbody.Velocity += instantVel * Time.DeltaTime;
+            Rigidbody.Velocity += instantVel * Time.DeltaTime;
         }
 
         protected override void LoadContent(ContentManager content)
@@ -137,7 +138,7 @@ namespace GameProject.Actors
             flightSound.Stop();
 
             user = null;
-            rigidbody = null;
+            Rigidbody = null;
             flightSound = null;
 
             Bomb[] bombs = Game.Instance.GetActors<Bomb>();

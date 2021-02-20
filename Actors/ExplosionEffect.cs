@@ -39,7 +39,7 @@ namespace GameProject.Actors
         {
             base.Draw();
 
-            RenderSpriteFromSheet(Position, spritesheet, spriteSize, animationFrame, 0, 0, animationFrame);
+            RenderSpriteFromSheet(Position, spritesheet, spriteSize, spriteSize, 0, 0, animationFrame);
         }
     }
 }
