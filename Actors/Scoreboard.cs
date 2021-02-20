@@ -10,7 +10,7 @@ namespace GameProject.Actors
 {
     class Scoreboard : Actor
     {
-        public int EnemiesKilled { get; set; } = 0;
+        public int Score { get; set; } = 0;
         /// <summary>
         /// The most enemies killed in a single bannanarang
         /// </summary>
@@ -34,8 +34,8 @@ namespace GameProject.Actors
         {
             base.Draw();
 
-            RenderTextScreenspace(Position, $"Enemies killed: {EnemiesKilled}", bangers, Color.Gold);
-            RenderTextScreenspace(Position + new Vector2(0, bangers.LineSpacing), $"Streak: {EnemiesKilledStreak}", bangers, Color.Gold);
+            RenderTextScreenspace(Position, $"Score: {Score}", bangers, Color.Gold);
+            RenderTextScreenspace(Position + new Vector2(0, bangers.LineSpacing), $"Highest killstreak: {EnemiesKilledStreak}", bangers, Color.Gold);
         }
     }
 }

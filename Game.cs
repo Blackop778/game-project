@@ -5,6 +5,7 @@ using GameProject.Actors;
 using GameProject.Engine;
 using GameProject.Engine.Components;
 using System;
+using System.Linq;
 
 namespace GameProject
 {
@@ -165,27 +166,55 @@ namespace GameProject
         public void SpawnEnemy()
         {
             Vector2 playerPos;
-            if (actors.Find(a => a is Player) is Player player)
+            Actor player = actors.Find(a => a is Boomerang);
+            if (player != null)
                 playerPos = player.Position;
             else
                 playerPos = Vector2.Zero;
 
-            Random r = new Random();
-            Vector2 enemyPos;
+            Instantiate(new Enemy(GetPositionAwayFromPoint(playerPos, 200f)));
+        }
+
+        public void SpawnBomb()
+        {
+            Vector2 playerPos;
+            Actor boomerang = actors.Find(a => a is Boomerang);
+            if (boomerang != null)
+                playerPos = boomerang.Position;
+            else
+                playerPos = Vector2.Zero;
+
+            Instantiate(new Bomb(GetPositionAwayFromPoint(playerPos, 400f)));
+        }
+
+        private Vector2 GetPositionAwayFromPoint(Vector2 point, float distanceFromPlayer)
+        {
+            Vector2 pos;
             do
             {
+                int displayLeft = 64 + 32;
+                int displayRight = DisplayWidth - 64 - 32;
+                int widthRange = displayRight - displayLeft;
+                int displayTop = 56 + 64 + 32;
+                int displayBottom = DisplayHeight - 64 - 32;
+                int heightRange = displayBottom - displayTop;
                 // Prevent them from spawning on the border 5% of the screen
-                enemyPos.X = ((float)r.NextDouble() * 0.9f + 0.05f) * DisplayWidth;
-                enemyPos.Y = ((float)r.NextDouble() * 0.8f + 0.1f) * DisplayHeight;
-                enemyPos = enemyPos.ScreenToWorldspace();
-            } while (Vector2.Distance(playerPos, enemyPos) < 200);
+                pos.X = ((float)Utilities.random.NextDouble() * widthRange) + displayLeft;
+                pos.Y = ((float)Utilities.random.NextDouble() * heightRange) + displayTop;
+                pos = pos.ScreenToWorldspace();
+            } while (Vector2.Distance(point, pos) < distanceFromPlayer);
 
-            Instantiate(new Enemy(enemyPos));
+            return pos;
         }
 
         public T GetActor<T>() where T : Actor
         {
             return actors.Find(a => a is T) as T;
+        }
+
+        public T[] GetActors<T>() where T : Actor
+        {
+            return actors.Where(a => a is T).Select(a => a as T).ToArray();
         }
 
         public void SpawnBlockersAroundScreen()

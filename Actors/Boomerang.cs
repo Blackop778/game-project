@@ -22,7 +22,7 @@ namespace GameProject.Actors
         private SoundEffect catchSound;
         private int enemiesKilled = 0;
         private int animationFrame = 0;
-        private float animationTime;
+        private float animationTime = 0f;
 
         private readonly float maxVelocity = 600;
         private readonly float minVelocity = 400;
@@ -50,12 +50,16 @@ namespace GameProject.Actors
 
         protected override void Update()
         {
+            base.Update();
+
             animationTime += Time.DeltaTime;
             animationFrame = (int)(animationTime / animationFrameTime) % 4;
         }
 
         protected override void FixedUpdate()
         {
+            base.FixedUpdate();
+
             if (returning)
                 destination = user.Position;
 
@@ -113,10 +117,13 @@ namespace GameProject.Actors
 
                 enemiesKilled++;
 
+                if (enemiesKilled % 2 == 0)
+                    Game.Instance.SpawnBomb();
+
                 Scoreboard s = Game.Instance.GetActor<Scoreboard>();
                 if (s != null)
                 {
-                    s.EnemiesKilled++;
+                    s.Score += enemiesKilled;
                     if (enemiesKilled > s.EnemiesKilledStreak)
                         s.EnemiesKilledStreak = enemiesKilled;
                 }
@@ -132,6 +139,10 @@ namespace GameProject.Actors
             user = null;
             rigidbody = null;
             flightSound = null;
+
+            Bomb[] bombs = Game.Instance.GetActors<Bomb>();
+            foreach (Bomb bomb in bombs)
+                bomb.Destroy();
         }
     }
 }

@@ -44,6 +44,24 @@
 /processorParam:TextureFormat=Compressed
 /build:bangers.spritefont
 
+#begin Bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bomb.png
+
+#begin bomb_explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bomb_explosion.wav
+
 #begin boomerang.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -92,6 +110,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:enemy_death.wav
+
+#begin Explosion.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Explosion.png
 
 #begin game.tmx
 /copy:game.tmx
