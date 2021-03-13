@@ -7,6 +7,6 @@ Kill enemies with your boomerang. You get score per kill based on how many enemi
 * Throw boomerang - left mouse
 
 ## Technical about
-Made with monogame for OpenGL with .NET Core, so it should work on Windows, OSX, and Linux. Only tested on Windows.
+Made with monogame for DirectX using .NET Core.
 
 Art made using Aseprite and Paint.NET, audio edited using Audacity. See ASSETS.TXT for credits for assets.
